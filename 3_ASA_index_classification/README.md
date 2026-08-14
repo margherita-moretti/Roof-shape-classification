@@ -17,7 +17,7 @@ This script is the step in between: it takes the variable (ASA) and the cutoff (
 
 Reads the GeoPackage produced by [stage 1](../1_roof_morphology) (which already has `asp_asa` / `asp_asa_filtrata` computed per building) and adds a `classe` field:
 
-- `ASA < 0.6` → **piano** (flat roof)
+- `ASA < 0.6` → **flat** (flat roof)
 - `ASA ≥ 0.6` → **sloped** (pitched roof plane)
 - ASA missing (too few valid pixels for that building) → left unclassified (`None`), never silently defaulted to either class
 
