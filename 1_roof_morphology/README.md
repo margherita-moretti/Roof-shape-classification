@@ -73,21 +73,17 @@ To try it immediately without your own data, point the path variables at `sample
 
 ### Data
 
-Real input data is **not included** in this repository — purely a matter of size, not licence: the source data is openly licensed, but the rasters and building footprints are far larger than GitHub's per-file limits (25 MB via browser upload, 100 MB via git).
-
-- `dsm_clipped.tif`, `slope_clipped.tif`, `aspect_clipped.tif` — co-registered rasters, same resolution/extent. [Source: TODO — link + licence]
-- `buildings.shp` (or any OGR-readable vector) — building footprint polygons. [Source: TODO — link + licence]
-
-A tiny synthetic dataset is provided in `sample_data/` (two toy buildings, one flat and one pitched roof) purely so the script can be run end-to-end with no setup.
+dsm.tif, slope.tif, aspect.tif: co-registered rasters, same resolution/extent, clipped to the study area. Derived from national LiDAR DSM data (up to 1 m resolution), Piano Straordinario di Telerilevamento (PST), distributed via the Ministero dell'Ambiente e della Sicurezza Energetica geoportal. Licence: CC BY 4.0.
+buildings.shp: building footprint polygons. Derived from the volumetric units class of the Database Topografico (DBGT), Geoportale della Lombardia.
 
 ---
 
 ## Notes
 
-- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage) — it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation — a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both — which failed intermittently depending on available RAM at run time. Since success then depended on machine state rather than the code itself, the full-mosaic step was dropped in favour of a version that behaves identically regardless of input size or free memory. If you need a visual of the MAD-filtered surface for a figure, export it separately for just the buildings you need.
-- Handles rasters with no NoData value declared in their metadata (falls back to NaN internally) and rasters with stray NaN pixels even when NoData *is* declared as an ordinary sentinel value (e.g. near DSM gaps) — both are filtered out consistently.
+- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage) — it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation - a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both — which failed intermittently depending on available RAM at run time. Since success then depended on machine state rather than the code itself, the full-mosaic step was dropped in favour of a version that behaves identically regardless of input size or free memory. If you need a visual of the MAD-filtered surface for a figure, export it separately for just the buildings you need.
+- Handles rasters with no NoData value declared in their metadata (falls back to NaN internally) and rasters with stray NaN pixels even when NoData *is* declared as an ordinary sentinel value (e.g. near DSM gaps) - both are filtered out consistently.
 
 ## Limitations
 
 - Bin widths and *k* values are reasonable defaults, not values tuned against this specific dataset.
-- ASA is computed via k-nearest-neighbours (KDTree) rather than a fixed-size raster window — a related but not identical notion of "local neighbourhood."
+- ASA is computed via k-nearest-neighbours (KDTree) rather than a fixed-size raster window - a related but not identical notion of "local neighbourhood."
