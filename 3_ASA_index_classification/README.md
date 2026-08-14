@@ -1,12 +1,12 @@
 # 3. ASA Index Classification
 
-Applies a threshold on the ASA index to classify every building in the full dataset as flat or pitched — not just the manually-labelled reference sample.
+Applies a threshold on the ASA index to classify every building in the full dataset as flat or sloped — not just the manually-labelled reference sample.
 
 Part of the pipeline described in the [repository root README](../README.md).
 
 ## Where the threshold comes from
 
-The 0.6 cutoff is not fitted by any script in this repository — it comes from a manually-labelled reference sample (field `tipo`: piano / sloped, assigned by visual inspection). That same reference sample serves two purposes elsewhere in the pipeline:
+The 0.6 cutoff is not fitted by any script in this repository, it comes from a calibration process on a larger sample not described in this repository.
 
 - [stage 2](../2_variable_separability) uses it to rank candidate variables and confirm ASA separates the two classes better than the alternatives (which variable to use);
 - [stage 4](../4_ASA_index_validation) uses it to quantify how well the 0.6 cutoff separates the two classes (effect size, significance) — see that folder for the important caveat that this evaluates the threshold on the same sample it was chosen from, not on held-out data.
