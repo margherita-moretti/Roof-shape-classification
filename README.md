@@ -2,7 +2,6 @@
 
 Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) from LiDAR-derived DSM data, for photovoltaic site-suitability assessment.
 
-> Companion code for: *Industrial rooftops characterization for photovoltaic power plants through remote sensing and climate projections* — Politecnico di Milano.
 > Author: Margherita Moretti.
 
 ---
@@ -16,7 +15,7 @@ Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) fr
 | 3 | [`3_ASA_index_classification/`](./3_ASA_index_classification) | Applies the calibrated ASA threshold to classify every building in the full dataset as flat or pitched. |
 | 4 | [`4_ASA_index_validation/`](./4_ASA_index_validation) | Discriminant validity check (R): Mann-Whitney U test comparing ASA between the manually-labelled reference classes, reporting effect size and significance. |
 
-Each folder has its own README with setup and usage instructions. Stages 2–4 take the GeoPackage produced by stage 1 as input.
+Stages 2–4 take the GeoPackage produced by stage 1 as input.
 
 ---
 
