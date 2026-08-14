@@ -1,0 +1,93 @@
+# 1. Roof Morphology Statistics
+
+Computes per-building statistics from a DSM/slope/aspect raster stack — the first stage of the pipeline described in the [repository root README](../README.md).
+
+For each building footprint, `roof_morphology.py`:
+1. Applies a Median Absolute Deviation (MAD) outlier filter to the DSM (removes antennas, HVAC units, parapets).
+2. Computes elevation / slope / aspect entropy (Shannon entropy on discretized values), raw and MAD-filtered.
+3. Computes the **Aspect Spatial Autocorrelation (ASA)** index.
+4. Computes KNN-based surface roughness.
+5. Writes a GeoPackage of per-building statistics (numeric fields as float64, for ArcGIS Pro compatibility).
+
+---
+
+## Method
+
+### Flat-roof detection: the ASA index
+
+Detecting flat roofs from local aspect coherence, rather than from slope alone, was an original approach devised for this project — not an adaptation of an existing published index. The idea: on a flat roof, small DSM noise makes the aspect (exposure direction) essentially **random** from pixel to pixel. On a pitched roof, aspect is **locally coherent** — neighbouring pixels point the same way. The ASA index below was designed to capture exactly that contrast.
+
+For each pixel, ASA is the inverse-distance-weighted mean of `cos(Δaspect)` with its *k* nearest neighbours (dot product between unit aspect vectors), then averaged over the building:
+
+```
+ASA_i = Σ_j [ w_j · (u_i · U_j) ] / Σ_j w_j
+```
+
+- **ASA → 1**: locally coherent aspect → pitched roof plane
+- **ASA → 0**: locally random aspect → flat / noisy roof
+
+A threshold of **0.6** separates the two classes (calibrated in stage 2, applied in stage 3). This is a distance-weighted circular coherence measure, not a normalized Moran's I — using unit-vector dot products avoids the 0°/360° wrap-around problem a naive Moran's I would have on aspect data.
+
+### MAD outlier filter
+
+```
+Zscore = 0.6745 · |z − median(z)| / MAD
+Zscore > 3 → pixel set to NoData
+```
+
+Median and MAD are computed per building, from interior pixels only.
+
+### Entropy
+
+Shannon entropy of elevation / slope / aspect, computed on **discretized (binned)** values — a continuous raster fed directly into an entropy calculation just counts unique pixel values, which mostly measures building size rather than surface complexity. Bin widths are configurable (defaults: 0.25 m elevation, 2° slope, 10° aspect) and are starting points, not values validated against a specific dataset.
+
+---
+
+## Output fields
+
+| Field | Description |
+|---|---|
+| `z_min`, `z_max`, `z_range`, `varianza` | Elevation stats, MAD-filtered |
+| `entropia`, `entropia_filtrata` | Elevation entropy, raw / MAD-filtered |
+| `pend_media`, `pend_media_filtrata` | Mean slope, raw / filtered |
+| `pend_var`, `pend_var_filtrata` | Slope variance, raw / filtered |
+| `pend_entropia`, `pend_entropia_filtrata` | Slope entropy, raw / filtered |
+| `asp_entropia`, `asp_entropia_filtrata` | Aspect entropy, raw / filtered |
+| `asp_asa`, `asp_asa_filtrata` | Aspect Spatial Autocorrelation index, raw / filtered |
+| `roughness` | Mean local (KNN) std of elevation |
+| `n_pixels` | Valid pixel count (QA field) |
+
+---
+
+## How to run
+
+Open `roof_morphology.py` and edit the path variables near the top (`raster_path`, `slope_path`, `aspect_path`, `buildings_path`) to point at your files, then:
+
+```bash
+pip install -r ../requirements.txt
+python roof_morphology.py
+# -> output/edifici_statistiche.gpkg
+```
+
+To try it immediately without your own data, point the path variables at `sample_data/` instead — see [Data](#data) below.
+
+### Data
+
+Real input data is **not included** in this repository — purely a matter of size, not licence: the source data is openly licensed, but the rasters and building footprints are far larger than GitHub's per-file limits (25 MB via browser upload, 100 MB via git).
+
+- `dsm_clipped.tif`, `slope_clipped.tif`, `aspect_clipped.tif` — co-registered rasters, same resolution/extent. [Source: TODO — link + licence]
+- `buildings.shp` (or any OGR-readable vector) — building footprint polygons. [Source: TODO — link + licence]
+
+A tiny synthetic dataset is provided in `sample_data/` (two toy buildings, one flat and one pitched roof) purely so the script can be run end-to-end with no setup.
+
+---
+
+## Notes
+
+- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage) — it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation — a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both — which failed intermittently depending on available RAM at run time. Since success then depended on machine state rather than the code itself, the full-mosaic step was dropped in favour of a version that behaves identically regardless of input size or free memory. If you need a visual of the MAD-filtered surface for a figure, export it separately for just the buildings you need.
+- Handles rasters with no NoData value declared in their metadata (falls back to NaN internally) and rasters with stray NaN pixels even when NoData *is* declared as an ordinary sentinel value (e.g. near DSM gaps) — both are filtered out consistently.
+
+## Limitations
+
+- Bin widths and *k* values are reasonable defaults, not values tuned against this specific dataset.
+- ASA is computed via k-nearest-neighbours (KDTree) rather than a fixed-size raster window — a related but not identical notion of "local neighbourhood."
