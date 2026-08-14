@@ -26,7 +26,7 @@ ASA_i = Σ_j [ w_j · (u_i · U_j) ] / Σ_j w_j
 - **ASA → 1**: locally coherent aspect → pitched roof plane
 - **ASA → 0**: locally random aspect → flat / noisy roof
 
-A threshold of **0.6** separates the two classes (calibrated in stage 2, applied in stage 3). This is a distance-weighted circular coherence measure, not a normalized Moran's I — using unit-vector dot products avoids the 0°/360° wrap-around problem a naive Moran's I would have on aspect data.
+A threshold of **0.6** separates the two classes (calibrated in stage 2, applied in stage 3). This is a distance-weighted circular coherence measure, using unit-vector dot products avoids the 0°/360° wrap-around problem.
 
 ### MAD outlier filter
 
@@ -68,8 +68,6 @@ pip install -r ../requirements.txt
 python roof_morphology.py
 # -> output/edifici_statistiche.gpkg
 ```
-
-To try it immediately without your own data, point the path variables at `sample_data/` instead — see [Data](#data) below.
 
 ### Data
 
