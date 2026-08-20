@@ -11,7 +11,7 @@ Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) fr
 | Stage | Folder | What it does |
 |---|---|---|
 | 1 | [`1_roof_morphology/`](./1_roof_morphology) | Per-building statistics from a DSM/slope/aspect raster stack: MAD-filtered elevation, entropy, the Aspect Spatial Autocorrelation (ASA) index, roughness. |
-| 2 | [`2_variable_separability/`](./2_variable_separability) | Given a reference set of hand-classified buildings, ranks candidate variables from stage 1 by how well they separate flat from non-flat roofs — used to calibrate the threshold applied in stage 3. |
+| 2 | [`2_variable_separability/`](./2_variable_separability) | Given a reference set of hand-classified buildings, ranks candidate variables from stage 1 by how well they separate flat from non-flat roofs. |
 | 3 | [`3_ASA_index_classification/`](./3_ASA_index_classification) | Applies the calibrated ASA threshold to classify every building in the full dataset as flat or pitched. |
 | 4 | [`4_ASA_index_validation/`](./4_ASA_index_validation) | Discriminant validity check (R): Mann-Whitney U test comparing ASA between the manually-labelled reference classes, reporting effect size and significance. |
 
