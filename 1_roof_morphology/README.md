@@ -23,7 +23,7 @@ For each pixel, ASA is the inverse-distance-weighted mean of `cos(Δaspect)` wit
 ASA_i = Σ_j [ w_j · (u_i · U_j) ] / Σ_j w_j
 ```
 
-- **ASA → 1**: locally coherent aspect → pitched roof plane
+- **ASA → 1**: locally coherent aspect → sloped roof plane
 - **ASA → 0**: locally random aspect → flat / noisy roof
 
 A threshold of **0.6** separates the two classes (calibrated in stage 2, applied in stage 3). This is a distance-weighted circular coherence measure, using unit-vector dot products avoids the 0°/360° wrap-around problem.
@@ -32,6 +32,7 @@ A threshold of **0.6** separates the two classes (calibrated in stage 2, applied
 
 ```
 Zscore = 0.6745 · |z − median(z)| / MAD
+MAD = median|z- median(z)|
 Zscore > 3 → pixel set to NoData
 ```
 
