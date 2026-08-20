@@ -4,15 +4,15 @@ Discriminant validity check for the ASA index: does ASA actually differ between 
 
 Part of the pipeline described in the [repository root README](../README.md).
 
-The same `tipo` reference sample is used twice elsewhere in the pipeline: [stage 2](../2_variable_separability) uses it to pick ASA as the variable to classify on; the 0.6 threshold applied in stage 3 was chosen by hand by inspecting this same sample. This script is the check on that decision: how cleanly does ASA actually separate the two reference classes.
+The same `tipo` reference sample is used twice elsewhere in the pipeline: [stage 2](../2_variable_separability) uses it to pick ASA as the variable to classify on; the calibration of the 0.6 threshold applied in stage 3 was carried out by inspecting this same sample. This script is the check on that decision: how cleanly does ASA actually separate the two reference classes.
 
 ## What it does
 
 `mann_whitney_evaluation.R` reads the GeoPackage produced by [stage 1](../1_roof_morphology) and runs a Mann-Whitney U test comparing `asp_asa_filtrata` between the two reference classes (field `tipo`: piano / sloped), reporting:
 
 - U statistic, p-value
-- Effect size (rank-biserial correlation r), which matters far more than the p-value here: with a reasonably sized sample, even a weak effect can produce a vanishingly small p-value, so p alone doesn't indicate how *well* ASA separates the classes — r does.
-- A histogram of the two distributions, annotated with the test result, saved as a publication-ready figure.
+- Effect size (rank-biserial correlation r), which matters far more than the p-value here: with a reasonably sized sample, even a weak effect can produce a vanishingly small p-value, so p alone doesn't indicate how *well* ASA separates the classes, the effect size does.
+- A histogram of the two distributions, annotated with the test result, saved as figure.
 
 ## How to run
 
