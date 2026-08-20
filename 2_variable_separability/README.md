@@ -35,4 +35,4 @@ python variable_separability.py
 
 ## Limitations
 
-The separability ranking is a descriptive heuristic (percentile-gap on normalized values), not a formal statistical test, wich is used [stage 4](../4_ASA_index_validation)..
+The separability ranking is a descriptive heuristic (percentile-gap on normalized values), not a formal statistical test, wich is used [stage 4](../4_ASA_index_validation).
