@@ -2,8 +2,6 @@
 
 Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) from LiDAR-derived DSM data, for photovoltaic site-suitability assessment.
 
-> Author: Margherita Moretti.
-
 ---
 
 ## Pipeline
