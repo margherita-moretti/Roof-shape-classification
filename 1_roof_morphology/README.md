@@ -7,7 +7,7 @@ For each building footprint, `roof_morphology.py`:
 2. Computes elevation / slope / aspect entropy (Shannon entropy on discretized values), raw and MAD-filtered.
 3. Computes the **Aspect Spatial Autocorrelation (ASA)** index.
 4. Computes KNN-based surface roughness.
-5. Writes a GeoPackage of per-building statistics (numeric fields as float64, for ArcGIS Pro compatibility).
+5. Writes a GeoPackage of per-building statistics (numeric fields as float64).
 
 ---
 
