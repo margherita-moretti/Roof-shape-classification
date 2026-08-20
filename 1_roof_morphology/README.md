@@ -40,7 +40,7 @@ Median and MAD are computed per building, from interior pixels only.
 
 ### Entropy
 
-Shannon entropy of elevation / slope / aspect, computed on **discretized (binned)** values — a continuous raster fed directly into an entropy calculation just counts unique pixel values, which mostly measures building size rather than surface complexity. Bin widths are configurable (defaults: 0.25 m elevation, 2° slope, 10° aspect) and are starting points, not values validated against a specific dataset.
+Shannon entropy of elevation / slope / aspect, computed on **discretized (binned)** values — a continuous raster fed directly into an entropy calculation just counts unique pixel values, which mostly measures building size rather than surface complexity. Bin widths are configurable (defaults: 0.25 m elevation, 2° slope, 10° aspect).
 
 ---
 
