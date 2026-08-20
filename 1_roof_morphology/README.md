@@ -3,7 +3,7 @@
 Computes per-building statistics from a DSM/slope/aspect raster stack — the first stage of the pipeline described in the [repository root README](../README.md).
 
 For each building footprint, `roof_morphology.py`:
-1. Applies a Median Absolute Deviation (MAD) outlier filter to the DSM (removes antennas, HVAC units, parapets).
+1. Applies a Median Absolute Deviation (MAD) outlier filter to the DSM.
 2. Computes elevation / slope / aspect entropy (Shannon entropy on discretized values), raw and MAD-filtered.
 3. Computes the **Aspect Spatial Autocorrelation (ASA)** index.
 4. Computes KNN-based surface roughness.
