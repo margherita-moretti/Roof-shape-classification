@@ -6,7 +6,7 @@ Given a reference set of buildings already classified (e.g. flat vs. sloped, by 
 
 ## Method
 
-Ranks candidate variables using the same percentile-gap metric used elsewhere in the paper to choose between candidate PV-detection spectral indices:
+Ranks candidate variables using the percentile-gap metric:
 
 ```
 separability = max(|p75_A − p25_B|, |p75_B − p25_A|)
@@ -35,4 +35,4 @@ python variable_separability.py
 
 ## Limitations
 
-The separability ranking is a descriptive heuristic (percentile-gap on normalized values), not a formal statistical test, wich is used [stage 4](../4_ASA_index_validation)..
+The separability ranking is a descriptive heuristic (percentile-gap on normalized values), not a formal statistical test, wich is used [stage 4](../4_ASA_index_validation).

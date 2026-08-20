@@ -3,11 +3,11 @@
 Computes per-building statistics from a DSM/slope/aspect raster stack — the first stage of the pipeline described in the [repository root README](../README.md).
 
 For each building footprint, `roof_morphology.py`:
-1. Applies a Median Absolute Deviation (MAD) outlier filter to the DSM (removes antennas, HVAC units, parapets).
+1. Applies a Median Absolute Deviation (MAD) outlier filter to the DSM.
 2. Computes elevation / slope / aspect entropy (Shannon entropy on discretized values), raw and MAD-filtered.
 3. Computes the **Aspect Spatial Autocorrelation (ASA)** index.
 4. Computes KNN-based surface roughness.
-5. Writes a GeoPackage of per-building statistics (numeric fields as float64, for ArcGIS Pro compatibility).
+5. Writes a GeoPackage of per-building statistics (numeric fields as float64).
 
 ---
 
@@ -23,7 +23,7 @@ For each pixel, ASA is the inverse-distance-weighted mean of `cos(Δaspect)` wit
 ASA_i = Σ_j [ w_j · (u_i · U_j) ] / Σ_j w_j
 ```
 
-- **ASA → 1**: locally coherent aspect → pitched roof plane
+- **ASA → 1**: locally coherent aspect → sloped roof plane
 - **ASA → 0**: locally random aspect → flat / noisy roof
 
 A threshold of **0.6** separates the two classes (calibrated in stage 2, applied in stage 3). This is a distance-weighted circular coherence measure, using unit-vector dot products avoids the 0°/360° wrap-around problem.
@@ -32,6 +32,7 @@ A threshold of **0.6** separates the two classes (calibrated in stage 2, applied
 
 ```
 Zscore = 0.6745 · |z − median(z)| / MAD
+MAD = median|z- median(z)|
 Zscore > 3 → pixel set to NoData
 ```
 
@@ -39,7 +40,7 @@ Median and MAD are computed per building, from interior pixels only.
 
 ### Entropy
 
-Shannon entropy of elevation / slope / aspect, computed on **discretized (binned)** values — a continuous raster fed directly into an entropy calculation just counts unique pixel values, which mostly measures building size rather than surface complexity. Bin widths are configurable (defaults: 0.25 m elevation, 2° slope, 10° aspect) and are starting points, not values validated against a specific dataset.
+Shannon entropy of elevation / slope / aspect, computed on **discretized (binned)** values — a continuous raster fed directly into an entropy calculation just counts unique pixel values, which mostly measures building size rather than surface complexity. Bin widths are configurable (defaults: 0.25 m elevation, 2° slope, 10° aspect).
 
 ---
 
@@ -72,14 +73,13 @@ python roof_morphology.py
 ### Data
 
 dsm.tif, slope.tif, aspect.tif: co-registered rasters, same resolution/extent, clipped to the study area. Derived from national LiDAR DSM data (up to 1 m resolution), Piano Straordinario di Telerilevamento (PST), distributed via the Ministero dell'Ambiente e della Sicurezza Energetica geoportal. Licence: CC BY 4.0.
-buildings.shp: building footprint polygons. Derived from the volumetric units class of the Database Topografico (DBGT), Geoportale della Lombardia.
+buildings.shp: building footprint polygons. Derived from the volumetric units class of the Database Topografico (DBGT), Geoportale della Lombardia.Licence: CC BY 4.0.
 
 ---
 
 ## Notes
 
-- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage) — it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation - a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both — which failed intermittently depending on available RAM at run time. Since success then depended on machine state rather than the code itself, the full-mosaic step was dropped in favour of a version that behaves identically regardless of input size or free memory. If you need a visual of the MAD-filtered surface for a figure, export it separately for just the buildings you need.
-- Handles rasters with no NoData value declared in their metadata (falls back to NaN internally) and rasters with stray NaN pixels even when NoData *is* declared as an ordinary sentinel value (e.g. near DSM gaps) - both are filtered out consistently.
+- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage); it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation - a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both. The full-mosaic step was dropped in favour of a version that behaves identically regardless of input size.
 
 ## Limitations
 

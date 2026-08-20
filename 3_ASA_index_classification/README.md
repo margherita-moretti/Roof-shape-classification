@@ -1,27 +1,21 @@
 # 3. ASA Index Classification
 
-Applies a threshold on the ASA index to classify every building in the full dataset as flat or pitched — not just the manually-labelled reference sample.
+Applies a threshold on the ASA index to classify every building in the full dataset as flat or sloped, not just the manually-labelled reference sample.
 
 Part of the pipeline described in the [repository root README](../README.md).
-
-## Where the threshold comes from
-
-The 0.6 cutoff is not fitted by any script in this repository — it comes from a manually-labelled reference sample (field `tipo`: piano / sloped, assigned by visual inspection). That same reference sample serves two purposes elsewhere in the pipeline:
-
-- [stage 2](../2_variable_separability) uses it to rank candidate variables and confirm ASA separates the two classes better than the alternatives (which variable to use);
-- [stage 4](../4_ASA_index_validation) uses it to quantify how well the 0.6 cutoff separates the two classes (effect size, significance) — see that folder for the important caveat that this evaluates the threshold on the same sample it was chosen from, not on held-out data.
-
-This script is the step in between: it takes the variable (ASA) and the cutoff (0.6) as given, and applies that decision rule to every building, including the ones with no manual label.
 
 ## What it does
 
 Reads the GeoPackage produced by [stage 1](../1_roof_morphology) (which already has `asp_asa` / `asp_asa_filtrata` computed per building) and adds a `classe` field:
 
-- `ASA < 0.6` → **piano** (flat roof)
+- `ASA < 0.6` → **flat** (flat roof)
 - `ASA ≥ 0.6` → **sloped** (pitched roof plane)
-- ASA missing (too few valid pixels for that building) → left unclassified (`None`), never silently defaulted to either class
 
-`classe` (this script's output, for every building) is deliberately a separate field from `tipo` (the manual reference labels, for a subset) — keeping them distinct is what makes stage 4's validation meaningful: it can compare the two rather than a field against itself.
+`classe` (this script's output, for every building) is deliberately a separate field from `tipo` (the manual reference labels, for a subset).
+
+## Notes
+
+The 0.6 cutoff is not fitted by any script in this repository, it comes from a calibration process on a larger sample not described in this repository.
 
 ## How to run
 
