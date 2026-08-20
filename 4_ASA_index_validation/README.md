@@ -31,8 +31,6 @@ Rscript mann_whitney_evaluation.R
 # -> output/ASA_piano_vs_sloped.png
 ```
 
-**Note (Windows):** use forward slashes in `input_gpkg` (`"C:/Users/..."`), not backslashes — R interprets `\` inside a quoted string as an escape sequence and will error on a literal Windows path.
-
 ## Interpreting the result
 
 The rank-biserial r ranges from -1 to 1; conventional benchmarks are ~0.1 small, ~0.3 medium, ~0.5 large. It also has a direct concrete reading: `(1 − r) / 2` is the probability that a randomly picked pair from the two classes is ordered the "wrong" way round — i.e. `1 − (1−r)/2` is how often ASA correctly ranks a random piano/sloped pair, which is often easier to communicate than the r statistic alone.
