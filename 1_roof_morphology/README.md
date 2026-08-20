@@ -79,8 +79,7 @@ buildings.shp: building footprint polygons. Derived from the volumetric units cl
 
 ## Notes
 
-- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage) — it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation - a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both — which failed intermittently depending on available RAM at run time. Since success then depended on machine state rather than the code itself, the full-mosaic step was dropped in favour of a version that behaves identically regardless of input size or free memory. If you need a visual of the MAD-filtered surface for a figure, export it separately for just the buildings you need.
-- Handles rasters with no NoData value declared in their metadata (falls back to NaN internally) and rasters with stray NaN pixels even when NoData *is* declared as an ordinary sentinel value (e.g. near DSM gaps) - both are filtered out consistently.
+- **No full-extent raster output, by design.** This script only writes the per-building statistics (GeoPackage); it never builds a DSM/aspect raster covering the full input extent. An earlier version did build one (two full-size arrays in memory before writing), but for a large DSM this is a multi-gigabyte allocation - a ~23,000 × 38,000 px raster needs ~3.5 GB per array, ~7 GB for both. The full-mosaic step was dropped in favour of a version that behaves identically regardless of input size.
 
 ## Limitations
 
