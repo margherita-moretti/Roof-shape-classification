@@ -1,6 +1,6 @@
 # 3. ASA Index Classification
 
-Applies a threshold on the ASA index to classify every building in the full dataset as flat or sloped — not just the manually-labelled reference sample.
+Applies a threshold on the ASA index to classify every building in the full dataset as flat or sloped, not just the manually-labelled reference sample.
 
 Part of the pipeline described in the [repository root README](../README.md).
 
