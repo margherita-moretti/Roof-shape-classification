@@ -21,9 +21,9 @@ Stages 2–4 take the GeoPackage produced by stage 1 as input.
 
 ## The core idea
 
-Flat roofs and pitched roofs look different in one specific way: on a flat roof, small DSM noise makes the aspect (exposure direction) essentially **random** from pixel to pixel; on a pitched roof, aspect is **locally coherent** — neighbouring pixels point the same way.
+Flat roofs and sloped roofs look different in one specific way: on a flat roof, small DSM noise makes the aspect (exposure direction) essentially **random** from pixel to pixel; on a pitched roof, aspect is **locally coherent** — neighbouring pixels point the same way.
 
-The **ASA (Aspect Spatial Autocorrelation) index** — an original approach devised for this project, not adapted from an existing published index — captures exactly that contrast: values near 1 indicate a coherent pitched surface, values near 0 indicate a locally random (flat) one. A threshold of 0.6 separates the two classes. Full details in [`1_roof_morphology/README.md`](./1_roof_morphology/README.md).
+The **ASA (Aspect Spatial Autocorrelation) index** — an original approach devised for this project, not adapted from an existing published index — captures exactly that contrast: values near 1 indicate a coherent sloped surface, values near 0 indicate a locally random (flat) one. A threshold of 0.6 separates the two classes. Full details in [`1_roof_morphology/README.md`](./1_roof_morphology/README.md).
 
 ---
 
