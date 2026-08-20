@@ -73,7 +73,7 @@ python roof_morphology.py
 ### Data
 
 dsm.tif, slope.tif, aspect.tif: co-registered rasters, same resolution/extent, clipped to the study area. Derived from national LiDAR DSM data (up to 1 m resolution), Piano Straordinario di Telerilevamento (PST), distributed via the Ministero dell'Ambiente e della Sicurezza Energetica geoportal. Licence: CC BY 4.0.
-buildings.shp: building footprint polygons. Derived from the volumetric units class of the Database Topografico (DBGT), Geoportale della Lombardia.
+buildings.shp: building footprint polygons. Derived from the volumetric units class of the Database Topografico (DBGT), Geoportale della Lombardia.Licence: CC BY 4.0.
 
 ---
 
