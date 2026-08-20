@@ -34,7 +34,3 @@ Rscript mann_whitney_evaluation.R
 ## Interpreting the result
 
 The rank-biserial r ranges from -1 to 1; conventional benchmarks are ~0.1 small, ~0.3 medium, ~0.5 large. It also has a direct concrete reading: `(1 − r) / 2` is the probability that a randomly picked pair from the two classes is ordered the "wrong" way round — i.e. `1 − (1−r)/2` is how often ASA correctly ranks a random piano/sloped pair, which is often easier to communicate than the r statistic alone.
-
-## Limitation
-
-`tipo` is the same sample the 0.6 threshold was chosen from — this test is therefore evaluated on the calibration sample itself, not on held-out data. The result reflects how cleanly the threshold fits the sample it was picked on; it is not yet an out-of-sample validation. A held-out subset (labelled but *not* looked at when choosing the threshold) would be needed to rule out optimistic bias from fitting and evaluating on the same data.
