@@ -1,6 +1,6 @@
 # PV Rooftop Suitability — Roof Morphology Pipeline
 
-Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) from LiDAR-derived DSM data, for photovoltaic site-suitability assessment.
+Four-stage pipeline to classify industrial rooftops (flat / pitched / curved) from LiDAR-derived DSM data, for photovoltaic site-suitability assessment ([`pv-site-suitability-framework.pdf`](pv-site-suitability-framework.pdf)).
 
 ---
 
